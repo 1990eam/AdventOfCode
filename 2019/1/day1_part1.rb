@@ -1,4 +1,5 @@
 =begin
+--- Part One ---
 --- Day 1: The Tyranny of the Rocket Equation ---
 Santa has become stranded at the edge of the Solar System while delivering presents to other planets! To accurately calculate his position in space, safely align his warp drive, and return to Earth in time to save Christmas, he needs you to bring him measurements from fifty stars.
 
@@ -22,7 +23,7 @@ What is the sum of the fuel requirements for all of the modules on your spacecra
 
 =end
 
-input = IO.readlines("data/input.txt")
+input = IO.readlines("data/input_part1.txt")
 total = 0
 input.each do |line|
   total += ((line.to_i / 3).round - 2)
