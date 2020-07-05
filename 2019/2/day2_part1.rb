@@ -1,3 +1,5 @@
+require 'pry'
+
 =begin
 On the way to your gravity assist around the Moon, your ship computer beeps angrily about a "1202 program alarm". On the radio, an Elf is already explaining how to handle the situation: "Don't worry, that's perfectly norma--" The ship computer bursts into flames.
 
@@ -47,25 +49,42 @@ Once you have a working computer, the first step is to restore the gravity assis
 
 # ["1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,1,9,19,1,19,5,23,2,23,13,27,1,10,27,31,2,31,6,35,1,5,35,39,1,39,10,43,2,9,43,47,1,47,5,51,2,51,9,55,1,13,55,59,1,13,59,63,1,6,63,67,2,13,67,71,1,10,71,75,2,13,75,79,1,5,79,83,2,83,9,87,2,87,13,91,1,91,5,95,2,9,95,99,1,99,5,103,1,2,103,107,1,10,107,0,99,2,14,0,0"]
 
-input = IO.readlines("data/input.txt")
-
-opcode = input[0]
-pos1 = input[opcode + 1]
-pos2 = input[opcode + 2]
-result = nil
-replace_at = input[opcode + 3]
-
-case opcode
-when 1
-  result = sum(pos1, pos2)
-end
-
-
-
 def sum(pos1, pos2)
   pos1 + pos2
 end
 
 def multiply(pos1, pos2)
-  pos1*pos2
+  pos1 * pos2
 end
+
+def run(input)
+  start = input[0]
+  opcode = input[0]
+  pos1 = input[input[opcode] + 1]
+  pos2 = input[input[opcode] + 2]
+  result = nil
+  replace_at = input[input[opcode] + 3]
+
+
+  if opcode == 1
+    result = sum(pos1, pos2)
+    input[replace_at] = result
+    opcode = input[input[opcode] + 4]
+    # recursive call
+  elsif opcode == 2
+    result = multiply(pos1, pos2)
+    input[replace_at] = result
+    opcode = input[opcode + 4]
+    # recursive call
+  elsif opcode == 99
+    puts "OPCODE 99 - HALTING.."
+    exit
+  else puts "ERROR - ABORTING GRAVITY ASSIST"
+  end
+
+end
+
+input = IO.readlines("data/input.txt")
+input = input[0].split(',')
+input = input.map(&:to_i)
+run(input)
