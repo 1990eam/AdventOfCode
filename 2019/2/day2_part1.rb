@@ -57,15 +57,15 @@ Once you have a working computer, the first step is to restore the gravity assis
 
 def run(input)
   start = 0
-  # lap = 0
+  lap = 0
   input[1] = 12
   input[2] = 2
+
   while true
     opcode = input[start]
     input1 = input[start + 1]
     input2 = input[start + 2]
     output = input[start + 3]
-    # binding.pry
     if opcode == 1
       input[output] = input[input1] + input[input2]
     elsif opcode == 2
@@ -78,14 +78,13 @@ def run(input)
       puts "CANT RECOGNIZE THAT OPCODE"
     end
   start += 4
-  # lap += 1
-  # puts "loop #{lap} finished"
+  lap += 1
   end
   puts input
+  puts "finished after #{lap} loops"
 end
 
 input = IO.readlines("data/input.txt")
 input = input[0].split(',')
 input = input.map(&:to_i)
-# input = [1,9,10,3,2,3,11,0,99,30,40,50]
 run(input)
