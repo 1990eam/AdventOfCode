@@ -47,44 +47,45 @@ Here are the initial and final states of a few more small programs:
 Once you have a working computer, the first step is to restore the gravity assist program (your puzzle input) to the "1202 program alarm" state it had just before the last computer caught fire. To do this, before running the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left at position 0 after the program halts?
 =end
 
-# ["1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,1,9,19,1,19,5,23,2,23,13,27,1,10,27,31,2,31,6,35,1,5,35,39,1,39,10,43,2,9,43,47,1,47,5,51,2,51,9,55,1,13,55,59,1,13,59,63,1,6,63,67,2,13,67,71,1,10,71,75,2,13,75,79,1,5,79,83,2,83,9,87,2,87,13,91,1,91,5,95,2,9,95,99,1,99,5,103,1,2,103,107,1,10,107,0,99,2,14,0,0"]
+# test:
+# input = [1,9,10,3,2,3,11,0,99,30,40,50]
 
-def sum(pos1, pos2)
-  pos1 + pos2
-end
+# real input:
+# 1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,1,9,19,1,19,5,23,2,23,13,27,1,10,27,31,2,31,6,35,1,5,35,39,1,39,10,43,2,9,43,47,1,47,5,51,2,51,9,55,1,13,55,59,1,13,59,63,1,6,63,67,2,13,67,71,1,10,71,75,2,13,75,79,1,5,79,83,2,83,9,87,2,87,13,91,1,91,5,95,2,9,95,99,1,99,5,103,1,2,103,107,1,10,107,0,99,2,14,0,0
 
-def multiply(pos1, pos2)
-  pos1 * pos2
-end
+
 
 def run(input)
-  start = input[0]
-  opcode = input[0]
-  pos1 = input[input[opcode] + 1]
-  pos2 = input[input[opcode] + 2]
-  result = nil
-  replace_at = input[input[opcode] + 3]
+  start = 0
+  # lap = 0
+  input[1] = 12
+  input[2] = 2
+  while true
+    opcode = input[start]
+    input1 = input[start + 1]
+    input2 = input[start + 2]
+    output = input[start + 3]
+    # binding.pry
+    if opcode == 1
+      input[output] = input[input1] + input[input2]
+    elsif opcode == 2
+      input[output] = input[input1] * input[input2]
 
-
-  if opcode == 1
-    result = sum(pos1, pos2)
-    input[replace_at] = result
-    opcode = input[input[opcode] + 4]
-    # recursive call
-  elsif opcode == 2
-    result = multiply(pos1, pos2)
-    input[replace_at] = result
-    opcode = input[opcode + 4]
-    # recursive call
-  elsif opcode == 99
-    puts "OPCODE 99 - HALTING.."
-    exit
-  else puts "ERROR - ABORTING GRAVITY ASSIST"
+    elsif opcode == 99
+      puts "breaking"
+      break
+    else
+      puts "CANT RECOGNIZE THAT OPCODE"
+    end
+  start += 4
+  # lap += 1
+  # puts "loop #{lap} finished"
   end
-
+  puts input
 end
 
 input = IO.readlines("data/input.txt")
 input = input[0].split(',')
 input = input.map(&:to_i)
+# input = [1,9,10,3,2,3,11,0,99,30,40,50]
 run(input)
