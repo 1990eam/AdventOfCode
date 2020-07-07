@@ -1,3 +1,4 @@
+require "pry"
 # --- Part Two ---
 # "Good, the new computer seems to be working correctly! Keep it nearby during this mission - you'll probably use it again. Real Intcode computers support many more features than your new one, but we'll let you know what they are as you need them."
 
@@ -18,10 +19,11 @@
 # Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
 
 def run(input)
+  lap = 0
   start = 0
   input[1] = 12
   input[2] = 2
-  target = 19690720
+  # aca hay que meter los for para que vaya corriendo de a 1
   while true
     opcode = input[start]
     input1 = input[start + 1]
@@ -33,10 +35,10 @@ def run(input)
       input[output] = input[input1] * input[input2]
 
     elsif opcode == 99
+      puts input
       puts "breaking"
+      puts "finished after #{lap} loops"
       break
-    else
-      puts "CANT RECOGNIZE THAT OPCODE"
     end
   start += 4
   lap += 1
@@ -47,4 +49,3 @@ input = IO.readlines("data/input.txt")
 input = input[0].split(',')
 input = input.map(&:to_i)
 run(input)
-
