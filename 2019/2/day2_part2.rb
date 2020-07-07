@@ -47,21 +47,22 @@ def run(input)
         input2 = input[start + 2]
         output = input[start + 3]
 
-        if opcode == 1
-          input[output] = input[input1] + input[input2]
-        elsif opcode == 2
-          input[output] = input[input1] * input[input2]
-        elsif opcode == 99
-          if input[0] == target
-            puts "TARGET FOUND! Gravity restore coordinates are #{noun} #{verb}"
-            exit
-          end
-          puts "reached code 99, but #{input[0]} is not desired target #{target}"
-          break
-        else
-          puts "unrecognized opcode"
-          binding.pry
-          break
+        case opcode
+          when 1
+            input[output] = input[input1] + input[input2]
+          when 2
+            input[output] = input[input1] * input[input2]
+          when 99
+            if input[0] == target
+              puts "TARGET FOUND! Gravity restore coordinates are #{noun} #{verb}"
+              exit
+            end
+            puts "reached code 99, but #{input[0]} is not desired target #{target}"
+            break
+          else
+            puts "unrecognized opcode"
+            binding.pry
+            break
         end
         # a este start + 4 solo llega si es opcode 1 o 2, sino se saltea por el break
         start += 4
