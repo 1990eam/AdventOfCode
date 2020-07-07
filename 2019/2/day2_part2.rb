@@ -18,31 +18,54 @@ require "pry"
 
 # Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
 
-def run(input)
-  lap = 0
-  start = 0
-  input[1] = 12
-  input[2] = 2
-  # aca hay que meter los for para que vaya corriendo de a 1
-  while true
-    opcode = input[start]
-    input1 = input[start + 1]
-    input2 = input[start + 2]
-    output = input[start + 3]
-    if opcode == 1
-      input[output] = input[input1] + input[input2]
-    elsif opcode == 2
-      input[output] = input[input1] * input[input2]
+# real input
+# 1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,1,9,19,1,19,5,23,2,23,13,27,1,10,27,31,2,31,6,35,1,5,35,39,1,39,10,43,2,9,43,47,1,47,5,51,2,51,9,55,1,13,55,59,1,13,59,63,1,6,63,67,2,13,67,71,1,10,71,75,2,13,75,79,1,5,79,83,2,83,9,87,2,87,13,91,1,91,5,95,2,9,95,99,1,99,5,103,1,2,103,107,1,10,107,0,99,2,14,0,0
 
-    elsif opcode == 99
-      puts input
-      puts "breaking"
-      puts "finished after #{lap} loops"
-      break
+def run(input)
+  target = 19690720
+  start = 0
+
+  # noun & verb
+  input[1] = nil
+  input[2] = nil
+
+  for noun in 0..100 do
+    puts "noun is #{noun}"
+    input[1] = noun
+    for verb in 0..100 do
+      puts "verb is #{verb}"
+      input[2] = verb
+      while true
+        opcode = input[start]
+        input1 = input[start + 1]
+        input2 = input[start + 2]
+        output = input[start + 3]
+
+        if opcode == 1
+          input[output] = input[input1] + input[input2]
+        elsif opcode == 2
+          input[output] = input[input1] * input[input2]
+        elsif opcode == 99
+          if input[0] == target
+            puts "TARGET FOUND! #{noun} #{verb}"
+            exit
+          end
+          puts "reached 99, but #{input[0]} is not desired target #{target}"
+          binding.pry
+          break
+        else
+          puts "unrecognized opcode"
+          binding.pry
+          break
+        end
+        # a este start + 4 solo llega si es opcode 1 o 2, sino se saltea por el break
+        start += 4
+      end
+
     end
-  start += 4
-  lap += 1
+
   end
+
 end
 
 input = IO.readlines("data/input.txt")
